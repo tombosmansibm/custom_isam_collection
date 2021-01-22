@@ -1,0 +1,90 @@
+---
+# Base Setup
+#   description
+#   Example:
+#      iterator:
+- hosts: "all"
+  gather_facts: no
+  collections:
+    - custom.isam
+  tasks:
+    - name: Perform First Steps
+      tags: ["first", "steps"]
+      include_role:
+        name: ibm.isam.base.first_steps
+      vars:
+        first_steps_admin_pwd: True
+
+    - name: Set admin password
+      tags:
+        - admin-pwd
+        - setpwd
+      vars:
+         new_password: "{{ ansible_password }}"
+      include_role:
+        apply:
+          tags:
+            - setpwd
+            - admin-pwd
+        name: ibm.isam.base.change_admin_password
+      when:
+        - old_password is defined
+
+#    - name: Set the network hostname to appliance hostname
+#      tags: ["hostname"]
+#      include_role:
+#       name: ibm.isam.set_network_hostname
+#      vars:
+#       set_network_hostname_hostname: "{{ appliance_name }}"
+
+    - name: Configure NTP
+      tags: ["ntp"]
+      include_role:
+       name: ibm.isam.base.configure_time
+
+    - name: Activate modules module
+      tags: ["activation"]
+      include_role:
+        name: ibm.isam.base.activate_modules
+      vars:
+        activation_keys:
+        - { id: "wga", code: "{{ lookup( 'file', activation_module_code_wga_file)  }}" }
+        - { id: "mga", code: "{{ lookup( 'file', activation_module_code_mga_file) }}" }
+        - { id: "federation", code: "{{ lookup( 'file', activation_module_code_fed_file) }}" }
+
+    - name: Configure network ipv4
+      tags: ["ipv4"]
+      include_role:
+       name: ibm.isam.base.add_interfaces
+
+    - name: Set hostname
+      include_role:
+        name: ibm.isam.set_network_hostname
+      tags: ["hostname"]
+      vars:
+         set_network_hostname_hostname : "{{ appliance_name }}"
+
+    - name: Show configured static routes
+      tags: ["ipv4"]
+      include_role:
+        name: ibm.isam.base.get_static_routes
+
+    - name: Configure static routes
+      tags: ["ipv4"]
+      include_role:
+        name: custom.isam.base.add_static_routes
+      when: static_routes is defined
+
+    - name: Configure DNS
+      tags: ["dns"]
+      include_role:
+       name: ibm.isam.config_dns
+
+# Configure runtime
+    - name: Configure policy server
+      tags: ["policy"]
+      include_role:
+        apply:
+          tags:
+            - policy
+        name: ibm.isam.web.configure_policyserver
