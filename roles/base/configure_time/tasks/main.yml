@@ -37,6 +37,11 @@
         Ctrl+C + 'C'  = continue
         Ctrl+C + 'A'  = abort
   when: help is defined
+
+- name: Pause to show this is overridden as base.configure_time
+  pause:
+      prompt: "Configure_time is overriden"  
+
 - name: Configure time settings [time]
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
