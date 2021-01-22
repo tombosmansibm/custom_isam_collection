@@ -4,7 +4,6 @@ This is an example collection, how to deploy your own collections, while using t
 
 Although it is possible to push your own modifications back to the master ibm.isam collection, this may be a lenghtly process.
 
-
 It allows you to 
 - override roles in the ibm.isam collection (in playbooks)
 - add roles specific to this implementaion, or alternative roles
@@ -15,8 +14,12 @@ You should separate your inventories from your playbooks , so they should be in 
 Note that making a collection may be a little bit too much for your use case.  
 You can also use a requirements.yml file to import the ibm.isam collection in your playbooks instead.
 
-## Create a collection
+## Links
+IBM Security isam-ansible-collection: https://github.com/IBM-Security/isam-ansible-collection
+Ansible Collections: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+ISAM Automation cookbook: https://www.ibm.com/support/pages/node/6348868
 
+## Create a collection
 ### Initialize the collection
 ```
 ansible-galaxy collection init custom.isam
@@ -61,6 +64,7 @@ ansible-galaxy collection build --force
 Building generates a tarball that contains the collection.
 ### Publish to an Ansible Galaxy server
 You could publish your collection to an Ansible Galaxy server, but in the scope of this use case, that is not necessary.
+So if your company has an Ansible Galaxy server, by all means , set it up.
 
 ### Install
 Installing a collection is the easiest if your collection is published on an Ansible Galaxy server, but it's not a must.
@@ -85,7 +89,7 @@ The way to override roles, requires you to drop the namespace from the roles.
 
 Although the recommendation is to always use the FQCN (Fully Qualified Collection Name), not using it allows you to easily override roles in your playbooks.
 
-**_NOTE:_** that this does not always work as expected, that's why it's adviced to use the FQCN!  
+**_NOTE:_**  this does not always work as expected, that's why it's adviced to use the FQCN!    I refer to the Ansible documentation.
 
 ## Add your custom roles
 This is the main usecase for building your own collection.  
