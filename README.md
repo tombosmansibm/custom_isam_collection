@@ -42,6 +42,12 @@ dependencies: {
 
 Update the version as well, when you make larger changes.
 
+### Add your roles and playbooks
+At this point, the actual work begins.
+Playbooks go in a "playbooks" directory, Roles go in the "roles" directory.
+
+Since this is an enhancement of the ibm.isam collection, you can start from there and copy the roles as starting point for new roles  or to enhance them.
+
 ### Push to git
 You should push your collection to your Github repository (Git, Gitlab, Bitbucket, .... ), to make it available.
 
