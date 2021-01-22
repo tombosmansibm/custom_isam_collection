@@ -15,9 +15,9 @@ Note that making a collection may be a little bit too much for your use case.
 You can also use a requirements.yml file to import the ibm.isam collection in your playbooks instead.
 
 ## Links
-IBM Security isam-ansible-collection: https://github.com/IBM-Security/isam-ansible-collection
-Ansible Collections: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
-ISAM Automation cookbook: https://www.ibm.com/support/pages/node/6348868
+- IBM Security isam-ansible-collection: https://github.com/IBM-Security/isam-ansible-collection
+- Ansible Collections: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+- ISAM Automation cookbook: https://www.ibm.com/support/pages/node/6348868
 
 ## Create a collection
 ### Initialize the collection
