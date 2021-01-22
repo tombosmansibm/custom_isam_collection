@@ -16,5 +16,15 @@ Note that making a collection may be a little bit too much.
 You can also use a requirements.yml file to import the ibm.isam collection in your playbooks instead.
 
 ## Galaxy.yml
-In galaxy.yml, you can define the 
+In galaxy.yml, you can define the dependency to the ibm.isam collection (or any other collection you need)
+
+You can and should define a version, but "*" means "any version". 
+```
+dependencies: {
+  ibm.isam: "*"
+}
+```
+
 ## Override roles
+I have not found a way to override roles from 1 namespaced collection over the other.
+
