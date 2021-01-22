@@ -26,7 +26,7 @@
       include_role:
        name: base.configure_time
 #
-# This uses a role from the "custom.isam" collection
+# This uses a role from the "custom.isam" collection, that does not exist in ibm.isam
 #
     - name: Show configured static routes
       tags: ["ipv4"]
