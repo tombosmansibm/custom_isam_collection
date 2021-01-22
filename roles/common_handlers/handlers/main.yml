@@ -2,21 +2,21 @@
 # Important: The order of handlers is crucial. See documentation:
 #   http://docs.ansible.com/ansible/glossary.html#notify
 # <cut>Handlers are run in the order they are listed, not in the order that they are notified.</cut>
-- name: Commit Changes and Restart
+- name: Commit Changes and Restart (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
     action: ibmsecurity.isam.appliance.commit_and_restart_and_wait
 
-- name: Commit Changes for both Appliance and Docker
+- name: Commit Changes for both Appliance and Docker  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
     action: ibmsecurity.isam.appliance.commit
   listen: "Commit Changes"
 
-- name: Publish Changes (docker)
-  isam:
+- name: Publish Changes (docker)  (override)
+  ibm.isam.isam:
     lmi_port: "{{ port | default(omit) }}"
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
@@ -27,14 +27,14 @@
   listen: "Commit Changes"
 
 # Commit and Restart may cause LMI to restart - so wait to be safe
-- name: Await Appliance Commit LMI Response
+- name: Await Appliance Commit LMI Response  (override)
   wait_for:
     delay: 60
     timeout: "{{ start_config_wait_time }}"
     state: started
   when: not ansible_check_mode
 
-- name: Restart Web Runtime
+- name: Restart Web Runtime  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
@@ -44,7 +44,7 @@
 
 # This is a two part handler - first one gets all reverse proxies, second one restarts all of them
 # Get all reverse proxies in appliance - also set changed flag to trigegr next handler
-- name: Restart Reverse Proxy
+- name: Restart Reverse Proxy  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
@@ -54,7 +54,7 @@
   register: reverseproxy_list
 
 # Note: Restart function will only restart if required - set force to True to avoid that kind of check
-- name: Restart all Reverse Proxys - checks if flagged for restart
+- name: Restart all Reverse Proxys - checks if flagged for restart  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
@@ -65,7 +65,7 @@
   when: reverseproxy_list is defined and 'data' in reverseproxy_list
   with_items: "{{ reverseproxy_list['data'] }}"
 
-- name: Reload Liberty Runtime
+- name: Reload Liberty Runtime  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
@@ -74,7 +74,7 @@
       operation: "reload"
   when: not ansible_check_mode
 
-- name: Restart AAC Runtime
+- name: Restart AAC Runtime  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
@@ -83,7 +83,7 @@
       operation: "restart"
   when: not ansible_check_mode
 
-- name: Reboot Appliance
+- name: Reboot Appliance  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
@@ -91,20 +91,20 @@
   notify: Await Appliance LMI Response
   when: not ansible_check_mode
 
-- name: Restart LMI
+- name: Restart LMI  (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
     action: ibmsecurity.isam.base.lmi.restart
 
-- name: Await Appliance LMI Response
+- name: Await Appliance LMI Response  (override)
   wait_for:
     delay: 60
     timeout: "{{ start_config_wait_time }}"
     state: started
   when: not ansible_check_mode
 
-- name: Restart LMI and wait
+- name: Restart LMI and wait (override)
   ibm.isam.isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"

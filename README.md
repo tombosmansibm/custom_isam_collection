@@ -26,5 +26,10 @@ dependencies: {
 ```
 
 ## Override roles
-I have not found a way to override roles from 1 namespaced collection over the other.
+The way to override roles, requires you to drop the namespace from the roles.
+
+The roles shouldn't be namespaced anyway, but it can make sense to use the namespace (to make sure you are using the correct version).
+
+## Override handlers
+It's possible to override the handlers, but it's a bit trickier.  It appears the
 

@@ -8,7 +8,7 @@ namespace: custom
 name: isam
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 1.0.1
+version: 1.0.3
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -45,7 +45,7 @@ tags:
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies: {
-  ibm.isam: "*"
+  ibm.isam: ">=1.0.0"
 }
 
 # The URL of the originating SCM repository
@@ -64,5 +64,7 @@ issues: https://github.com/tombosmansibm/custom_isam_collection
 # artifact. A pattern is matched from the relative path of the file or directory of the collection directory. This
 # uses 'fnmatch' to match the files or directories. Some directories and files like 'galaxy.yml', '*.pyc', '*.retry',
 # and '.git' are always filtered
-build_ignore: []
+build_ignore:
+  - "*.tar.gz"
+
 
