@@ -28,7 +28,7 @@
 #
 # This uses a role from the "custom.isam" collection, that does not exist in ibm.isam
 #
-    - name: Show configured static routes
+    - name: Show configured static routes (from custom.isam)
       tags: ["ipv4"]
       include_role:
         name: custom.isam.base.get_static_routes

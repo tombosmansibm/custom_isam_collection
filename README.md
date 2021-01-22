@@ -2,9 +2,9 @@
 ## Description
 This is an example collection, how to deploy your own collections, while using the ibm.isam collection as a dependency.
 
-Although it is possible to push your own modifications back to the master ibm.isam collection, this may be a lenghtly process.
+Although it is possible to push your own modifications back to the master ibm.isam collection, this may be a slow process.
 
-It allows you to 
+This approach allows you to 
 - override roles in the ibm.isam collection (in playbooks)
 - add roles specific to this implementaion, or alternative roles
 - use Ansible Tower with your custom collection, while using ibm.isam collection
@@ -14,7 +14,10 @@ You should separate your inventories from your playbooks , so they should be in 
 Note that making a collection may be a little bit too much for your use case.  
 You can also use a requirements.yml file to import the ibm.isam collection in your playbooks instead.
 
+Anyway, the end result is a collection that is specific to *your* environment and that you can deploy .
+
 ## Links
+You do need to prepare your Ansible environment to run playbooks for ISAM (and you need an ISAM or IBM Security Verify Access machine).
 - IBM Security isam-ansible-collection: https://github.com/IBM-Security/isam-ansible-collection
 - Ansible Collections: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
 - ISAM Automation cookbook: https://www.ibm.com/support/pages/node/6348868
@@ -49,7 +52,50 @@ Update the version as well, when you make larger changes.
 At this point, the actual work begins.
 Playbooks go in a "playbooks" directory, Roles go in the "roles" directory.
 
-Since this is an enhancement of the ibm.isam collection, you can start from there and copy the roles as starting point for new roles  or to enhance them.
+Since this is an enhancement of the ibm.isam collection, you can start from there and copy the roles as starting point for new roles or to enhance them.
+
+#### roles
+
+- handlers: the handlers are modified to show that they're executed (although they may have no effect whatsoever)
+- base/get_static_routes: a role that does not exist in ibm.isam
+- base/configure_time: a role that exists in ibm.isam, but is modified (it will pause)
+
+#### playbook
+
+The playbook references :
+- a  role from ibm.isam
+- an overriden role in custom.isam that also exists in ibm.isam
+- a new role in custom.isam that does not exist (yet) in ibm.isam
+Notice the "collections" only contains "custom.isam"
+
+```
+- hosts: "all"
+  gather_facts: no
+  collections:
+    - custom.isam
+  tasks:
+    - name: Perform First Steps
+      tags: ["first", "steps"]
+      include_role:
+        name: ibm.isam.base.first_steps
+      vars:
+        first_steps_admin_pwd: True
+#
+# This is a role without FQCN
+#   It will first look in this collection and then in the ibm.isam collection
+#
+    - name: Configure NTP
+      tags: ["ntp"]
+      include_role:
+       name: base.configure_time
+#
+# This uses a role from the "custom.isam" collection, that does not exist in ibm.isam
+#
+    - name: Show configured static routes (from custom.isam)
+      tags: ["ipv4"]
+      include_role:
+        name: custom.isam.base.get_static_routes
+```
 
 ### Push to git
 You should push your collection to your Github repository (Git, Gitlab, Bitbucket, .... ), to make it available.
@@ -134,6 +180,6 @@ Now you can access the playbook in the collection like a normal playbook.
 ```
 ansible-playbook /home/tbosmans/.ansible/collections/ansible_collections/custom/isam/playbooks/dev-base-setup.yml -i <your inventory>
 ```
-
+**_NOTE:_** To run the ibm.isam collection, you do need to install the *ibmsecurity* pip package.  See the documentation:  https://github.com/IBM-Security/isam-ansible-collection
 ## Ansible tower
 TODO:  So far I haven't tried this out on Tower, it may be necessary to also add a "requirements.yml" .
