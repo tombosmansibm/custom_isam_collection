@@ -7,7 +7,7 @@ Although it is possible to push your own modifications back to the master ibm.is
 
 It allows you to 
 - override roles in the ibm.isam collection 
-- add roles specific to
+- add roles specific to this implementaion, or alternative roles
 - use Ansible Tower with your custom collection, while using ibm.isam collection
 
 You should separate your inventories from your playbooks , so they should be in a separate git repo (although you can bundle them in the collection)
@@ -15,3 +15,6 @@ You should separate your inventories from your playbooks , so they should be in 
 Note that making a collection may be a little bit too much.
 You can also use a requirements.yml file to import the ibm.isam collection in your playbooks instead.
 
+## Galaxy.yml
+In galaxy.yml, you can define the 
+## Override roles

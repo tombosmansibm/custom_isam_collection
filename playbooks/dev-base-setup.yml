@@ -1,6 +1,9 @@
 ---
 # Base Setup
-#   description
+#   This playbook shows how to reference your own custom collection, while stil using the "ibm.isam" namespace.
+#
+#   Please note that this playbook does require an inventory.
+#
 #   Example:
 #      iterator:
 - hosts: "all"
@@ -42,16 +45,6 @@
       include_role:
        name: ibm.isam.base.configure_time
 
-    - name: Activate modules module
-      tags: ["activation"]
-      include_role:
-        name: ibm.isam.base.activate_modules
-      vars:
-        activation_keys:
-        - { id: "wga", code: "{{ lookup( 'file', activation_module_code_wga_file)  }}" }
-        - { id: "mga", code: "{{ lookup( 'file', activation_module_code_mga_file) }}" }
-        - { id: "federation", code: "{{ lookup( 'file', activation_module_code_fed_file) }}" }
-
     - name: Configure network ipv4
       tags: ["ipv4"]
       include_role:
@@ -63,16 +56,18 @@
       tags: ["hostname"]
       vars:
          set_network_hostname_hostname : "{{ appliance_name }}"
-
+#
+# This uses a role from the "custom.isam" collection
+#
     - name: Show configured static routes
       tags: ["ipv4"]
       include_role:
-        name: ibm.isam.base.get_static_routes
+        name: custom.isam.base.get_static_routes
 
     - name: Configure static routes
       tags: ["ipv4"]
       include_role:
-        name: custom.isam.base.add_static_routes
+        name: ibm.isam.base.add_static_routes
       when: static_routes is defined
 
     - name: Configure DNS
