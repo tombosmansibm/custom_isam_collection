@@ -14,7 +14,7 @@ You should separate your inventories from your playbooks , so they should be in 
 Note that making a collection may be a little bit too much for your use case.  
 You can also use a requirements.yml file to import the ibm.isam collection in your playbooks instead.
 
-Anyway, the end result is a collection that is specific to *your* environment and that you can deploy .
+Anyway, the end result is a collection that is specific to *your* environment, that you can host on your Git repository of your choice (internal or external) and that you can deploy.
 
 ## Links
 You do need to prepare your Ansible environment to run playbooks for ISAM (and you need an ISAM or IBM Security Verify Access machine).
