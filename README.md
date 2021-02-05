@@ -125,8 +125,9 @@ ansible-galaxy collection install /home/tbosmans/ansible/collections/custom_isam
 
 #### git
 You can also install the collection directly from git, and that makes the most sense, definitely during development.
+Same remark about 'force'.
 ```
-ansible-galaxy collection install git@github.com:tombosmansibm/custom_isam_collection.git
+ansible-galaxy collection install git@github.com:tombosmansibm/custom_isam_collection.git --force
 ```
 
 # Advantages
@@ -171,7 +172,7 @@ This shows you the path where the collection is actually installed
 # /home/tbosmans/.ansible/collections/ansible_collections
 Collection  Version
 ----------- -------
-custom.isam 1.0.3
+custom.isam 1.0.6
 ```
 
 Add the path of the collection to the base path (replacing '.' with '/' ).
@@ -190,6 +191,7 @@ This enables you to add your own custom filter plugins, or dynamic inventory plu
 It's a bit trickier to override or add to the ibmsecurity python code, however.  This is because the plugins in ibm.isam collection dynamically lookup modules from the ibm.security package, and you guessed it, it's hardcoded to ibm.security .
 
 So there's still multiple ways to add your own code.
+
 ### Modify the python code in site-packages
 Install the ibmsecurity python package into your environment, where it will reside by default in the site-packages location.
 Perform your changes there.
@@ -203,5 +205,5 @@ This approach obviously has the disadvantage that your changes will be overwritt
 ### Update ibmsecurity
 
 
-## Ansible tower
+# Ansible tower
 TODO:  So far I haven't tried this out on Tower, it may be necessary to also add a "requirements.yml" .
