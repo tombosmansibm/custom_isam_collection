@@ -140,7 +140,7 @@ def main():
 
         module.exit_json(**ret_obj)
     else:
-        module.fail_json(name=action, msg='Error> invalid action specified, needs to be isam!',
+        module.fail_json(name=action, msg='Error> CUSTOM invalid action specified, needs to be isam!',
                          log=isam_util.strlog.getvalue())
 
 

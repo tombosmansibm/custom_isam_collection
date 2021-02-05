@@ -42,7 +42,7 @@
      prompt: "This is the version in custom.isam"
 
 - name: Configure time settings [time]
-  ibm.isam.isam:
+  isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
     action: ibmsecurity.isam.base.date_time.set
