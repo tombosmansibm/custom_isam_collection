@@ -1,0 +1,28 @@
+---
+# Base Setup
+#   This playbook shows how to reference your own custom collection, while stil using the "ibm.isam" namespace.
+#
+#   Please note that this playbook does require an inventory.
+#
+#   Example:
+#      iterator:
+- hosts: "all"
+  gather_facts: no
+  collections:
+    - custom.isam
+  tasks:
+#
+#   This is a role that calls an action (module) that is overriden from the one in ibm.security
+#   
+    - name: Get timezones
+      tags: ["ntp"]
+      include_role:
+       name: base.configure_time
+#
+# This uses a role from the "custom.isam" collection, that does not exist in ibm.isam
+#
+    - name: Show configured static routes (from custom.isam)
+      tags: ["ipv4"]
+      include_role:
+        name: custom.isam.base.get_static_routes
+
