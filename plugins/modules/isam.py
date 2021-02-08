@@ -121,7 +121,7 @@ def main():
 
         module.exit_json(**ret_obj)
         
-    elif action.startswith('ibmsecuritycustom.isam.'):
+    elif action.startswith('tbosmans.isam.'):
         # This allows me to call my own modules
         startd = datetime.datetime.now()
 
