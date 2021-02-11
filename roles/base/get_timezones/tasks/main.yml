@@ -24,14 +24,14 @@
         Ctrl+C + 'A'  = abort
   when: help is defined
 
-- name: Retrieve time zone
+- name: Retrieve a bogus list of timezones
   isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
-    action: tbosmans.isam.base.custom_date_time.get_timezones
+    action: tbosmans.isam.base.date_time.get_timezones
     isamapi: 
   register: timezones_obj
 
 - name: debug
   debug:
-     msg: "{{ timezones_obj.data|default('') | to_nice_yaml }}"
+     msg: "{{ timezones_obj.data|default('') | to_nice_json }}"

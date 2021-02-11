@@ -205,6 +205,8 @@ I've created it by copying the ibmsecurity package folder, and then stripping aw
 
 In this example, I'm overriding the isam.base.date_time package, with my own code.
 
+The timezones retrieved from the appliance are ignored, and overriden with a bogus timezone named "Home" .
+
 **_NOTE_**  You should package it in a way you can deploy it using pip.
 
 #### Make sure the Ansible modules can find your package
@@ -236,8 +238,7 @@ In this module, I added an elif statement to also look in my own Python package.
 ```
 
 
-
-
+#### Role
 
 
 
