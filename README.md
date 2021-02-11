@@ -48,6 +48,7 @@ dependencies: {
 
 Update the version as well, when you make larger changes.
 
+
 ### Add your roles and playbooks
 At this point, the actual work begins.
 Playbooks go in a "playbooks" directory, Roles go in the "roles" directory.
@@ -161,6 +162,8 @@ ansible-playbook custom.isam.playbooks.dev-base-setup -i <your inventory>
 
 ### Today
 A bit clunky, but you can run the playbooks from the collection.   It depends on where you install your collections (there's defaults and options).
+An alternative is to create a link to the location (that's what is actually proposed in the **IBM Security Verify Access - IBM automation cookbook** https://www.securitylearningacademy.com/enrol/index.php?id=5578)
+Note that, specifically for playbooks, there is not much value at this moment to put them in your own collection until Ansible 2.11 is available .
 
 List the installed collection.
 ```
@@ -192,13 +195,14 @@ It's a bit trickier to override or add to the ibmsecurity python code, however. 
 
 So there's still multiple ways to add your own code.
 
-### Modify the python code for ibmsecurity in site-packages drirectory
+### Modify the python code for ibmsecurity in site-packages directory
 Install the ibmsecurity python package into your environment, where it will reside by default in the site-packages location.
 Perform your changes there.
 
 This approach obviously has the disadvantage that your changes will be overwritten again if you install a newer version of the ibmsecurity pip package.
 
-### Create a custom package
+### Create a python package
+This is a more robust approach, that also easily allows you to switch back to code in the original "ibmsecurity" package.
 #### Create a similar structure as the ibmsecurity package
 Under docs/samples/site-packages/ , I've added a custom package "tbosmans".
 I've created it by copying the ibmsecurity package folder, and then stripping away everything I didn't need.
@@ -207,7 +211,7 @@ In this example, I'm overriding the isam.base.date_time package, with my own cod
 
 The timezones retrieved from the appliance are ignored, and overriden with a bogus timezone named "Home" .
 
-**_NOTE_**  You should package it in a way you can deploy it using pip.
+**_NOTE_**  You should package it in a way you can deploy it using pip.  See https://packaging.python.org/tutorials/packaging-projects/
 
 #### Make sure the Ansible modules can find your package
 The Ansible module that is provided in the "ibm.isam" collection, contains some code that dynamically looks up the package and functions.
@@ -258,6 +262,7 @@ There's 2 things to notice here:
 ...
 </pre>
 
+It's obviously not hard to simply change "tbosmans.isam" to "ibmsecurity.isam" again, to start using the "official" code again.
 
 #### Playbook
 In the playbook, by not using the full namespace , the first match will work (so first look in this collection, then look in the ibm.isam collection)
@@ -269,8 +274,64 @@ In the playbook, by not using the full namespace , the first match will work (so
        name: base.get_timezones
 ```
 
-The result is then (instead of a full list of timezones):
+The result is then the single, bogus timezone named "Home" (instead of a full list of timezones):
+
+
+> PLAY [all] 
+> ************************
+> TASK [Get timezones] 
+> ************************
+> TASK [custom.isam.base.get_timezones : Help INFO (-e help=true)] 
+> ************************
+> skipping: [192.168.151.128]
+> 
+> TASK [custom.isam.base.get_timezones : Retrieve a bogus list of timezones] 
+> ************************
+> [WARNING]: THIS IS CUSTOM CODE
+> ok: [192.168.151.128]
+> 
+> TASK [custom.isam.base.get_timezones : debug] 
+> ************************
+> ok: [192.168.151.128] => {
+>     **"msg": "[\n    {\n        \"id\": \"Home\",\n        \"name\": \"UTC+00:00 Home\"\n    }\n]"**
+> }
+> 
+> PLAY RECAP 
+> ************************
+> 192.168.151.128            : ok=2    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
 
 
 # Ansible tower
-TODO:  So far I haven't tried this out on Tower, it may be necessary to also add a "requirements.yml" .
+
+**_NOTE_** : I HAVE NOT VERIFIED THIS YET
+
+## Ansible Galaxy
+
+There's support for ansible galaxy in Tower in the later version (2.9+).
+
+It basically works the same for collections as it already did for roles.
+
+You would have to create a requirements.yml file in a 'collections' directory in your playbooks directory that contains the collections you need.
+The requirements.yml should look something like this:
+
+```
+---
+collections:
+# ibm.isam
+- ibm.isam
+
+# Custom collection, for example from an internal git repo
+- name: custom.isam
+  version: '*'
+  type: git
+  source: 'git@github.com:tombosmansibm/custom_isam_collection.git'
+```  
+
+## Custom collection
+
+I think that in general (for ISAM) a custom collection only brings value for roles and custom modules/packages at this moment for Tower.
+Playbooks are better maintained in there separate Git repository, and inventories also should be in a separate git repository.
+
+
+
+
