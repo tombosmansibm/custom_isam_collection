@@ -34,4 +34,4 @@
 
 - name: debug
   debug:
-     msg: "{{ timezones_obj.data|default('') | to_nice_json }}"
+     msg: "{{ timezones_obj.data|default('') | to_nice_yaml }}"

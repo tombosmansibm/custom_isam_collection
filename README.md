@@ -239,8 +239,37 @@ In this module, I added an elif statement to also look in my own Python package.
 
 
 #### Role
+The custom role ties the custom module to the plays.
+
+There's 2 things to notice here:
+- module name: if you use a namespace, it should be the "custom.isam" namespace, not the "ibm.isam" namespace.  In this case, I remove the namespace, so it simply reads "isam".  This is necessary, so the module in this collection is used, where we modified the dynamic lookup of the acton.
+- action: the action needs to point to the python package, so in this case "tbosmans.isam" (instead of "ibmsecurity.isam")
 
 
+<pre>
+...
+- name: Retrieve a bogus list of timezones
+  <b>isam</b>:
+    log: "{{ log_level | default(omit) }}"
+    force: "{{ force | default(omit) }}"
+    action: <b>tbosmans.isam</b>.base.date_time.get_timezones
+    isamapi: 
+  register: timezones_obj
+...
+</pre>
+
+
+#### Playbook
+In the playbook, by not using the full namespace , the first match will work (so first look in this collection, then look in the ibm.isam collection)
+
+```
+    - name: Get timezones
+      tags: ["ntp"]
+      include_role:
+       name: base.get_timezones
+```
+
+The result is then (instead of a full list of timezones):
 
 
 # Ansible tower
