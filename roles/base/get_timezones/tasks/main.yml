@@ -28,7 +28,7 @@
   isam:
     log: "{{ log_level | default(omit) }}"
     force: "{{ force | default(omit) }}"
-    action: tbosmans.isam.base.date_time.get_timezones
+    action: tbosmans.isam.base.custom_date_time.get_timezones
     isamapi: 
   register: timezones_obj
 
