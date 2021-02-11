@@ -1,34 +1,21 @@
 ---
-# main task to configure time
+# main task to get timezones
 - name: Help INFO (-e help=true)
   pause:
     echo: yes
     prompt: |
       NAME
-        configure_time
+        get_timezones
 
       DESCRIPTION
-        Role to configure dns
+        Role to retrieve timezones with a custom package
 
       STEPS
-        1) Configure time
-        2) Commit changes
+        1) get timezones
 
       EXAMPLES
-        ansible-playbook -i [...] playbooks/ansible_collections/base/configure_time.yml
+        ansible-playbook -i [...] p
 
-      INVENTORY
-      ==========
-      # configure time with multiple NTP server
-      time_cfg:
-        enableNtp: true
-        ntpServers: "time.ibm.com,time2.ibm.com"
-        timeZone: "America/New_York"
-
-      # configure time with local time on ansible server
-      time_cfg:
-        dateTime: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
-        timeZone: "America/New_York"
       ==========
 
       INTERACTION
@@ -47,4 +34,4 @@
 
 - name: debug
   debug:
-     msg: "{{ timezones_obj|default('') | to_nice_yaml }}"
+     msg: "{{ timezones_obj.data|default('') | to_nice_yaml }}"

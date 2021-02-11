@@ -192,17 +192,54 @@ It's a bit trickier to override or add to the ibmsecurity python code, however. 
 
 So there's still multiple ways to add your own code.
 
-### Modify the python code in site-packages
+### Modify the python code for ibmsecurity in site-packages drirectory
 Install the ibmsecurity python package into your environment, where it will reside by default in the site-packages location.
 Perform your changes there.
 
 This approach obviously has the disadvantage that your changes will be overwritten again if you install a newer version of the ibmsecurity pip package.
 
-### Add a custom path to your PYTHON_PATH
+### Create a custom package
+#### Create a similar structure as the ibmsecurity package
+Under docs/samples/site-packages/ , I've added a custom package "tbosmans".
+I've created it by copying the ibmsecurity package folder, and then stripping away everything I didn't need.
+
+In this example, I'm overriding the isam.base.date_time package, with my own code.
+
+**_NOTE_**  You should package it in a way you can deploy it using pip.
+
+#### Make sure the Ansible modules can find your package
+The Ansible module that is provided in the "ibm.isam" collection, contains some code that dynamically looks up the package and functions.
+Unfortunately, it contains a check to only process "ibmsecurity.isam" code.
+
+```
+   # Dynamically process the action to be invoked
+    # Simple check to restrict calls to just "isam" ones for safety
+    if action.startswith('ibmsecurity.isam.'):
+    ...
+```
+
+So we need to provide our own copy of this module, that also works for our custom package "tbosmans.isam".
+Copy the plugins/modules/isam.py file from the ibm.isam collection into this structure.
+
+```
+└── plugins
+    └── modules
+        └── isam.py
+```
+
+In this module, I added an elif statement to also look in my own Python package.
+
+```
+    elif action.startswith('tbosmans.isam.'):
+        # This allows me to call my own modules
+        ...
+```
 
 
 
-### Update ibmsecurity
+
+
+
 
 
 # Ansible tower
