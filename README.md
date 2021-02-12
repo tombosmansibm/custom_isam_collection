@@ -225,7 +225,7 @@ The timezones retrieved from the appliance are ignored, and overriden with a bog
 The sample structure here also contains the structure necessary to upload this to pip.
 See https://packaging.python.org/tutorials/packaging-projects/ for more information on how to do that.
 
-For this demo , I uploaded the package to the test index of test.pypi.org : https://test.pypi.org/manage/project/tbosmans-isam-demo
+For this demo , I uploaded the package that is in this repo already to the test index of test.pypi.org : https://test.pypi.org/manage/project/tbosmans-isam-demo, so it is available .
 
 So first, create a new, clean virtual environment (for example with python 3.9)
 ```
@@ -243,7 +243,8 @@ Then install this demo package from test.pypi.org.
 ```
 pip install --upgrade --index-url https://test.pypi.org/simple/ --no-deps tbosmans-isam-demo
 ```
-**_NOTE_** It's probably not necessary to upload your override to pypi.org, but if you build the package, you can still install it using pip, and make it available on your favorite internal artifact repository (eg. artifactory).
+**_NOTE_** In real life, you probably don't want to upload your overrides to (public) pypi.org, but if you build the package, you can still install it using pip with the tarball in the *dist* directory.  You could obviously distribute this tarball any way you like to your systems.
+
 ```
 pip install --upgrade <path to this git repo on your disk>/docs/samples/site-packages/dist/tbosmans-isam-demo-1.0.0.tar.gz 
 ```
