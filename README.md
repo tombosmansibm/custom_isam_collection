@@ -116,6 +116,8 @@ So if your company has an Ansible Galaxy server, by all means , set it up.
 ### Install
 Installing a collection is the easiest if your collection is published on an Ansible Galaxy server, but it's not a must.
 
+By default, the collections go into .ansible/collections/ansible_collections and this is **shared across your virtual environments** .  You can however, change the collections path.
+
 #### tarbal
 From the tarbal that you created earlier during build, you can install the collection:
 Note that I think the "force" parameter should not be necessary if I install a newer version, but it is at the moment.
@@ -130,6 +132,13 @@ Same remark about 'force'.
 ```
 ansible-galaxy collection install git@github.com:tombosmansibm/custom_isam_collection.git --force
 ```
+
+**_TIP_**  If you recieve an error, it means your ansible(-galaxy) version is not up to date.
+Install ansible (pip install --upgrade ansible) into the virtual environment and log out (deactivate) and back in.
+
+> Process install dependency map
+> ERROR! Invalid collection name 'git@github.com', name must be in the format <namespace>.<collection>. 
+> Please make sure namespace and collection name contains characters from [a-zA-Z0-9_] only.
 
 # Advantages
 ## Override roles in playbooks
@@ -211,9 +220,32 @@ In this example, I'm overriding the isam.base.date_time package, with my own cod
 
 The timezones retrieved from the appliance are ignored, and overriden with a bogus timezone named "Home" .
 
-**_NOTE_**  You should package it in a way you can deploy it using pip.  See https://packaging.python.org/tutorials/packaging-projects/
+#### Pip
+The sample structure here also contains the structure necessary to upload this to pip.
+ See https://packaging.python.org/tutorials/packaging-projects/
 
-#### Make sure the Ansible modules can find your package
+ For this demo , I uploaded the package to the test index of test.pypi.org : https://test.pypi.org/manage/project/tbosmans-isam-demo
+
+So first, create a new, clean virtual environment (for example with python 3.9)
+```
+virtualenv ~/venvtmp --python=python3.9
+. ~/venvtmp/bin/activate
+```
+
+Then install the python prerequisites in that virtual environment:
+```
+pip install ansible
+pip install ibmsecurity
+```
+
+Then install this demo package from test.pypi.org.
+```
+pip install --upgrade --index-url https://test.pypi.org/simple/ --no-deps tbosmans-isam-demo
+```
+
+The custom.isam collection also has to be installed, but we did that earlier, and it's shared accross virtual environments.
+
+#### Ansible modules
 The Ansible module that is provided in the "ibm.isam" collection, contains some code that dynamically looks up the package and functions.
 Unfortunately, it contains a check to only process "ibmsecurity.isam" code.
 
@@ -276,6 +308,11 @@ In the playbook, by not using the full namespace , the first match will work (so
 
 The result is then the single, bogus timezone named "Home" (instead of a full list of timezones):
 
+To run the playbook:
+
+```
+ansible-playbook /home/tbosmans/.ansible/collections/ansible_collections/custom/isam/playbooks/dev-base-setup-module-demo.yml -i <inventory>
+```
 
 > PLAY [all] 
 > ************************
