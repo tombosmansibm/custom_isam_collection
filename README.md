@@ -213,18 +213,19 @@ This approach obviously has the disadvantage that your changes will be overwritt
 ### Create a python package
 This is a more robust approach, that also easily allows you to switch back to code in the original "ibmsecurity" package.
 #### Create a similar structure as the ibmsecurity package
-Under docs/samples/site-packages/ , I've added a custom package "tbosmans".
+Under docs/samples/site-packages/ , I've added a custom package "tbosmans" (you find it under "src").
 I've created it by copying the ibmsecurity package folder, and then stripping away everything I didn't need.
 
 In this example, I'm overriding the isam.base.date_time package, with my own code.
+This example only contains the **single function** that I want to override, although I did start from a copy of the original **data_time.py**.
 
 The timezones retrieved from the appliance are ignored, and overriden with a bogus timezone named "Home" .
 
 #### Pip
 The sample structure here also contains the structure necessary to upload this to pip.
- See https://packaging.python.org/tutorials/packaging-projects/
+See https://packaging.python.org/tutorials/packaging-projects/ for more information on how to do that.
 
- For this demo , I uploaded the package to the test index of test.pypi.org : https://test.pypi.org/manage/project/tbosmans-isam-demo
+For this demo , I uploaded the package to the test index of test.pypi.org : https://test.pypi.org/manage/project/tbosmans-isam-demo
 
 So first, create a new, clean virtual environment (for example with python 3.9)
 ```
@@ -242,6 +243,10 @@ Then install this demo package from test.pypi.org.
 ```
 pip install --upgrade --index-url https://test.pypi.org/simple/ --no-deps tbosmans-isam-demo
 ```
+**_NOTE_** It's probably not necessary to upload your override to pypi.org, but if you build the package, you can still install it using pip, and make it available on your favorite internal artifact repository (eg. artifactory).
+```
+pip install --upgrade <path to this git repo on your disk>/docs/samples/site-packages/dist/tbosmans-isam-demo-1.0.0.tar.gz 
+```
 
 The custom.isam collection also has to be installed, but we did that earlier, and it's shared accross virtual environments.
 
@@ -255,7 +260,6 @@ Unfortunately, it contains a check to only process "ibmsecurity.isam" code.
     if action.startswith('ibmsecurity.isam.'):
     ...
 ```
-
 So we need to provide our own copy of this module, that also works for our custom package "tbosmans.isam".
 Copy the plugins/modules/isam.py file from the ibm.isam collection into this structure.
 
