@@ -39,14 +39,11 @@ https://galaxy.ansible.com/docs/developers/contributing.html#setting-up-your-dev
 
 This results in a local galaxy server running on port 8000: http://localhost:8000/
 
-## Add namespace
-To be able to publish on the public Galaxy server, you need to request a namespace first.
-
-On the local machine, you can obviously create it yourself.
-
-## Publish collection
-
+## Prepare your ansible-galaxy client
 Create an ansible.cfg file , for instance in your home directory (touch ~/.ansible.cfg)
+This can contain multiple Galaxy servers, and the servers are picked in order of precedence here.
+So by setting local_galaxy as first entry, it will make sure your local galaxy server is used.
+If you want to use a different server, you must use the "--server" parameter.
 
 > [galaxy]
 > server_list = local_galaxy, release_galaxy
@@ -58,6 +55,44 @@ Create an ansible.cfg file , for instance in your home directory (touch ~/.ansib
 > url=http://localhost:8000/
 > token=<token>
 
+## Add namespace
+To be able to publish on the public Galaxy server, you need to request a namespace first.
+
+On the local machine, you can obviously create it yourself.
+
+As the administrator user, create a namespace here:
+http://localhost:8000/admin/main/namespace/
+
+In this demo, I need to add the namespace "custom".  Note that each user has a namespace automatically created already (matches his Github username).
+You also need the ibm namespace, to be able to import the ibm.isam collection.
+
+```
+custom
+ibm
+```
+
+To avoid this error, we need to also import the ibm.isam collection on the local Galaxy server.
+> ERROR! Galaxy import process failed: Invalid collection metadata. Dependency namespace not in galaxy: ibm.isam (Code: GLW0002)
+
+Download the collection tarball from https://galaxy.ansible.com/ibm/isam and publish it:
+
+> [tbosmans@tbosmans-p73 isam]$ ansible-galaxy collection publish /home/tbosmans/Downloads/ansible/ibm-isam-1.0.0.tar.gz 
+> Publishing collection artifact '/home/tbosmans/Downloads/ansible/ibm-isam-1.0.0.tar.gz' to local_galaxy http://localhost:8000/api
+> Collection has been published to the Galaxy server local_galaxy http://localhost:8000/api
+> Waiting until Galaxy import task http://localhost:8000/api/v2/collection-imports/6/ has completed
+> Collection has been successfully published and imported to the Galaxy server local_galaxy http://localhost:8000/api
+
+## Publish custom collection
+
 ````
 ansible-galaxy collection publish /home/tbosmans/ansible/ansible_collections/custom/isam/custom-isam-1.0.15.tar.gz
 ````
+
+You need to end up with this:
+> Collection has been successfully published and imported to the Galaxy server local_galaxy http://localhost:8000/api
+
+## Galaxy interface
+The result should be that you can locate the 2 collections on your local Galaxy server.
+
+![galaxy](images/galaxy_isam.png)
+
