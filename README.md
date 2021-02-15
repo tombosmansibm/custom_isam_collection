@@ -244,7 +244,9 @@ Use --no-deps, so pip doesn't try to resolve dependencies on test.pypi.org (you 
 ```
 pip install --upgrade --index-url https://test.pypi.org/simple/ --no-deps tbosmans-isam-demo
 ```
-**_NOTE_** In real life, you probably don't want to upload your overrides to (public) pypi.org, but if you build the package, you can still install it using pip with the tarball in the *dist* directory.  You could obviously distribute this tarball any way you like to your systems.
+**_NOTE_** In real life, you probably don't want to upload your overrides to (public) pypi.org, but if you build the package, you can still install it using pip with the tarball in the *dist* directory.  You could obviously distribute this tarball any way you like to your systems...
+
+You may still want to go ahead and publish to pypi, especially if you use public repository systems (eg. Github), because of the recent "Dependency Confusion attack technique"  (https://www.zdnet.com/article/microsoft-warns-enterprises-of-new-dependency-confusion-attack-technique/), where Pypi seems particularly vulnerable.
 
 ```
 pip install --upgrade <path to this git repo on your disk>/docs/samples/site-packages/dist/tbosmans-isam-demo-1.0.0.tar.gz 
@@ -376,6 +378,7 @@ collections:
 I think that in general (for ISAM) a custom collection only brings value for roles and custom modules/packages at this moment for Tower.
 Playbooks are better maintained in there separate Git repository, and inventories also should be in a separate git repository.
 
+**It's actually very very hard at the moment to implement collections on Tower/AWX.  It's just too soon.**
 
 
 

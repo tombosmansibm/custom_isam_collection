@@ -1,7 +1,7 @@
 collections:
 # ibm.isam (name only)
   - name: ibm.isam
-  - name: git@github.com:tombosmansibm/custom_isam_collection.git
+  - name: 'git@github.com:tombosmansibm/custom_isam_collection.git'
     version: dev
     type: git
 #   source: 'git@github.com:tombosmansibm/custom_isam_collection.git'
