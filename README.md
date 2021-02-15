@@ -364,7 +364,8 @@ collections:
 - ibm.isam
 
 # Custom collection, for example from an internal git repo
-- name: custom.isam
+# This does not work with the namespace (name: custom.isam fails)
+- name: git@github.com:tombosmansibm/custom_isam_collection.git
   version: '*'
   type: git
   source: 'git@github.com:tombosmansibm/custom_isam_collection.git'
