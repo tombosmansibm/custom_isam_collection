@@ -1,6 +1,6 @@
 collections:
-# ibm.isam
-- name: ibm.isam
+# ibm.isam (name only)
+- ibm.isam
 
 # Custom collection, for example from an internal git repo
 - name: custom.isam
