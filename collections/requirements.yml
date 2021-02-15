@@ -1,8 +1,9 @@
 collections:
 # ibm.isam (name only)
   - name: ibm.isam
+# problem with a hostname is that it won't resolve .... 
   - name: custom.isam
-    source: 'http://tower:8000'
+    source: 'http://9.171.16.83:8000'
  #This does not work on Tower:
  # - name: 'git@github.com:tombosmansibm/custom_isam_collection.git'
  #   version: dev
