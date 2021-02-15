@@ -1,0 +1,9 @@
+collections:
+# ibm.isam
+- name: ibm.isam
+
+# Custom collection, for example from an internal git repo
+- name: custom.isam
+  version: '*'
+  type: git
+  source: 'git@github.com:tombosmansibm/custom_isam_collection.git'

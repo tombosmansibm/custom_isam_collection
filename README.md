@@ -240,6 +240,7 @@ pip install ibmsecurity
 ```
 
 Then install this demo package from test.pypi.org.
+Use --no-deps, so pip doesn't try to resolve dependencies on test.pypi.org (you want the dependencies from the "production" environment, so in this case it means you have to install "ibmsecurity" prior to running this).
 ```
 pip install --upgrade --index-url https://test.pypi.org/simple/ --no-deps tbosmans-isam-demo
 ```
