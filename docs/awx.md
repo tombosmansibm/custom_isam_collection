@@ -96,3 +96,11 @@ The result should be that you can locate the 2 collections on your local Galaxy 
 
 ![galaxy](images/galaxy_isam.png)
 
+
+# Install
+
+Now you cannot use "localhost:8000" from within the local AWX container, because that will not resolve.
+To make this work, you need to put a local ip address in there
+
+  - name: custom.isam
+    source: 'http://<local ip address>:8000'
