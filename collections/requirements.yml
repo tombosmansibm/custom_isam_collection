@@ -1,11 +1,11 @@
 collections:
 # ibm.isam (name only)
-- name: ibm.isam
+  - name: ibm.isam
+  - name: custom.isam
+    version: dev
+    source: 'git+https://github.com/tombosmansibm/custom_isam_collection.git'
 # Custom collection, for example from an internal git repo
 #- name: custom.isam
 #  version: dev
 #  type: git
 #  source: 'https://github.com/tombosmansibm/custom_isam_collection.git'
- - name: custom.isam
-   version: dev
-   source: 'git+https://github.com/tombosmansibm/custom_isam_collection.git'
