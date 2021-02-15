@@ -4,6 +4,6 @@ collections:
 
 # Custom collection, for example from an internal git repo
 - name: custom.isam
-  version: '*'
+  version: dev
   type: git
   source: 'git@github.com:tombosmansibm/custom_isam_collection.git'
