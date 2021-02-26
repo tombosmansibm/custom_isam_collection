@@ -2,7 +2,7 @@ collections:
 # ibm.isam (name only)
   - name: ibm.isam
 # problem with a hostname is that it won't resolve .... 
-# use the actual ip address of your machine, that works.  I should figure out how to get the docker ip of the container, but I'm too lazy.
+# use the actual ip address of your machine, that works.  Any Docker ip address if fine (docker0, docker1)
   - name: custom.isam
 #    source: 'http://9.171.16.83:8000'
     source: 'http://172.17.0.1:8000'

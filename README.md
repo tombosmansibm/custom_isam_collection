@@ -7,7 +7,7 @@ Although it is possible to push your own modifications back to the master ibm.is
 This approach allows you to 
 - override roles in the ibm.isam collection (in playbooks)
 - add roles specific to this implementaion, or alternative roles
-- use Ansible Tower with your custom collection, while using ibm.isam collection
+- use Ansible Tower with your custom collection, while using ibm.isam collection (*actually , this is not quite possible yet*)
 
 You should separate your inventories from your playbooks , so they should be in a separate git repo (although you can bundle them in the collection)
 
@@ -352,7 +352,7 @@ ansible-playbook /home/tbosmans/.ansible/collections/ansible_collections/custom/
 
 ## Ansible Galaxy
 
-There's support for ansible galaxy in Tower in the later version (2.9+).
+There's limited support for ansible galaxy in Tower in the later versions (2.9+).
 
 It basically works the same for collections as it already did for roles.
 
@@ -376,7 +376,7 @@ collections:
 ## Custom collection
 
 I think that in general (for ISAM) a custom collection only brings value for roles and custom modules/packages at this moment for Tower.
-Playbooks are better maintained in there separate Git repository, and inventories also should be in a separate git repository.
+Playbooks are better maintained in their separate Git repository, and inventories also should be in a separate git repository.
 
 **It's actually very very hard at the moment to implement collections on Tower/AWX.  It's just too soon.**
 

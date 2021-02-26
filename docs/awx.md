@@ -11,8 +11,11 @@ The only important thing is that you must prepare the virtual environment direct
 I hope this allows you to prepare the virtual environment to run Ansible in, on your machine.
 The AWX installation that runs in Docker should then pick it up.
 
+The virtual env needs to be made availabe by using the api.
 
 
+markupsafe
+escape
 
 # Start stop the awx
 The docker compose result ends up here:
@@ -104,3 +107,67 @@ To make this work, you need to put a local ip address in there
 
   - name: custom.isam
     source: 'http://<local ip address>:8000'
+
+That local ip address can be ANY of the Docker interface's ip addresses you should have now.
+
+
+# Prepare Python virtual environment for awx
+
+
+
+docker exec -it awx_task /bin/bash
+
+   . /data/venv/venvisam/bin/activate
+   python -m pip install ansible
+   python -m pip install setuptools
+   python -m pip install ansible
+   python -m pip install wheel
+   python -m pip install ansible
+   python -m pip install ibmsecurity
+   python -m pip install psutil
+   python -m pip install --upgrade --index-url https://test.pypi.org/simple/ --no-deps tbosmans-isam-demo
+
+
+(venvisam) bash-4.4# python -m pip list
+Package            Version
+------------------ ----------
+ansible            2.10.7
+ansible-base       2.10.5
+certifi            2020.12.5
+cffi               1.14.5
+chardet            4.0.0
+cryptography       3.4.5
+ibmsecurity        2021.2.8.0
+idna               2.10
+Jinja2             2.11.3
+MarkupSafe         1.1.1
+packaging          20.9
+psutil             5.8.0
+pycparser          2.20
+pyparsing          2.4.7
+PyYAML             5.4.1
+requests           2.25.1
+setuptools         53.0.0
+tbosmans-isam-demo 1.0.0
+urllib3            1.26.3
+wheel              0.36.2
+
+## environment
+
+## project
+## job template
+
+
+
+
+# Run the job
+
+
+    Traceback (most recent call last):
+  File "/data/venv/venvisam/bin/ansible-playbook", line 62, in <module>
+    import ansible.constants as C
+  File "/data/venv/venvisam/lib/python3.9/site-packages/ansible/constants.py", line 12, in <module>
+    from jinja2 import Template
+  File "/data/venv/venvisam/lib/python3.9/site-packages/jinja2/__init__.py", line 6, in <module>
+    from markupsafe import escape
+ModuleNotFoundError: No module named 'markupsafe'
